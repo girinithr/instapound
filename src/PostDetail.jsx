@@ -1,30 +1,73 @@
-import { useEffect, useState } from 'react';
+// PostDetail.jsx
+import React, { useState, useEffect } from 'react';
+import useSWR from 'swr';
 import CommentSection from './CommentSection';
+import './styles/PostDetail.css';
 
-function PostDetail({ post, onBack }) {
-  const [comments, setComments] = useState([]);
-  const [likes, setLikes] = useState(post.reactions?.likes || 0);
+const fetcher = (url) => fetch(url).then((res) => res.json());
+
+function PostDetail({ postId, goBack }) {
+  const { data: postData } = useSWR(`https://dummyjson.com/posts/${postId}`, fetcher);
+  const [reaction, setReaction] = useState(null);
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
 
   useEffect(() => {
-    fetch(`https://dummyjson.com/posts/${post.id}/comments`)
-      .then(res => res.json())
-      .then(data => setComments(data.comments || []))
-      .catch(() => setComments([]));
-  }, [post.id]);
+    if (postData?.reactions) {
+      setLikes(postData.reactions.likes || 0);
+      setDislikes(postData.reactions.dislikes || 0);
+    }
+  }, [postData]);
+
+  const toggleLike = () => {
+    if (reaction === 'like') {
+      setReaction(null);
+      setLikes((prev) => prev - 1);
+    } else {
+      setReaction('like');
+      setLikes((prev) => prev + 1);
+      if (reaction === 'dislike') setDislikes((prev) => prev - 1);
+    }
+  };
+
+  const toggleDislike = () => {
+    if (reaction === 'dislike') {
+      setReaction(null);
+      setDislikes((prev) => prev - 1);
+    } else {
+      setReaction('dislike');
+      setDislikes((prev) => prev + 1);
+      if (reaction === 'like') setLikes((prev) => prev - 1);
+    }
+  };
+
+  if (!postData) return <p>Loading...</p>;
 
   return (
     <div className="post-detail">
       <div className="left-pane">
-        <h2>{post.title}</h2>
-        <p>{post.body}</p>
-        <button onClick={onBack}>⬅ Back</button>
+        <button onClick={goBack}>⬅ Back</button>
+        <h2>{postData.title}</h2>
+        <p>{postData.body}</p>
       </div>
       <div className="right-pane">
         <div className="likes">
-          ❤️ {likes} likes | 💔 {post.reactions?.dislikes || 0} dislikes
+          <button
+            onClick={toggleLike}
+            className={`like-btn ${reaction === 'like' ? 'active' : ''}`}
+          >
+            {reaction === 'like' ? '❤️' : '🤍'} {likes}
+          </button>
+          <button
+            onClick={toggleDislike}
+            className={`dislike-btn ${reaction === 'dislike' ? 'active' : ''}`}
+          >
+            👎 {dislikes}
+          </button>
         </div>
-        <h4>Comments</h4>
-        <CommentSection comments={comments} setComments={setComments} />
+        <div className="comment-wrapper">
+          <CommentSection postId={postId} />
+        </div>
       </div>
     </div>
   );

@@ -1,20 +1,30 @@
-import { useState } from 'react';
-import Login from './Login';
-import Posts from './Posts';
-import './App.css';
+import { useContext } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { UserContext } from "./UserContext";
 
-function App() {
-  const [loggedInUser, setLoggedInUser] = useState(null);
+import Header from "./Header";
+import Posts from "./Posts";
+import Profile from "./Profile";
+
+import "./App.css";
+
+export default function App() {
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const handleProfileClick = () => {
+    navigate('/profile');
+  };
 
   return (
-    <div className="App">
-      {!loggedInUser ? (
-        <Login onLogin={setLoggedInUser} />
-      ) : (
-        <Posts loggedInUser={loggedInUser} />
-      )}
+    <div className={`main-container ${user?.theme || 'light-theme'}`}>
+      <Header onProfileClick={handleProfileClick} />
+
+      <Routes>
+        <Route path="/home" element={<Posts />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="*" element={<Posts />} />
+      </Routes>
     </div>
   );
 }
-
-export default App;

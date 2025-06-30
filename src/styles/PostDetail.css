@@ -1,0 +1,160 @@
+/* src/styles/PostDetail.css */
+
+.post-detail {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+  background: #f5f7fa;
+  color: #333;
+}
+
+.left-pane {
+  flex: 1;
+  padding: 2rem;
+  border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.left-pane button {
+  margin-bottom: 1rem;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.left-pane h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.left-pane p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.right-pane {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.likes {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.likes button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.likes button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* COMMENT SECTION */
+.comment-section {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.comment-section h4 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.comments-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #fff;
+}
+
+.comment {
+  margin-bottom: 1rem;
+  background: #f8f8f8;
+  padding: 0.8rem;
+  border-radius: 6px;
+  position: relative;
+}
+
+.comment strong {
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.comment-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.comment-actions button {
+  background: transparent;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.comment-input {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.comment-input input {
+  flex-grow: 1;
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.comment-input button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  border: none;
+  background: #007bff;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Responsive for small screens */
+@media screen and (max-width: 768px) {
+  .post-detail {
+    flex-direction: column;
+  }
+
+  .left-pane,
+  .right-pane {
+    flex: unset;
+    width: 100%;
+    height: auto;
+  }
+
+  .right-pane {
+    border-top: 1px solid #ccc;
+    margin-top: 1rem;
+  }
+}

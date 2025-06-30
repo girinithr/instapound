@@ -1,0 +1,35 @@
+/* src/SettingsPopup.css */
+.settings-popup {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: var(--popup-bg);
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 1rem;
+    z-index: 999;
+    color: var(--text-color);
+    min-width: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .settings-popup label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .settings-popup button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .settings-popup button:hover {
+    background: #0056b3;
+  }
+  

@@ -7,6 +7,10 @@ function SettingsPopup({ theme, toggleTheme }) {
         <button onClick={toggleTheme}>
           Switch to {theme === 'light' ? 'Dark' : 'Light'} Mode
         </button>
+        <button onClick={() => {
+          logout();
+          window.location.reload();
+        }}>🚪 Logout</button>
       </div>
     );
   }

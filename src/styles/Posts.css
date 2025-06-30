@@ -1,0 +1,181 @@
+/* src/Posts.css */
+.posts-wrapper {
+  display: flex;
+  flex-direction: column;
+  color: var(--text-color);
+}
+
+.posts-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.post-detail {
+  display: flex;
+  height: 100vh;
+  color: var(--text-color);
+}
+
+.left-pane {
+  flex: 1;
+  padding: 2rem;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+}
+
+.right-pane {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.back-btn {
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.likes button {
+  margin-right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.comments-list {
+  flex: 1;
+  overflow-y: auto;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}
+
+.comment {
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.comment-input {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.comment-input input {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.comment-input button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.search-bar-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+  gap: 8px;
+}
+
+.search-bar {
+  padding: 8px 12px;
+  font-size: 1rem;
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.clear-btn {
+  padding: 6px 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.clear-btn:hover {
+  background-color: #ddd;
+}
+
+.no-results {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #888;
+  margin-top: 2rem;
+}
+.search-modes {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.search-modes button {
+  padding: 5px 12px;
+  border: 1px solid #ccc;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.search-filters {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.search-filters button {
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  background-color: #f0f0f0;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-filters button:hover {
+  background-color: #e0e0e0;
+  border-color: #ccc;
+}
+
+.search-filters button.active {
+  background-color: #a64dff;
+  color: white;
+  border-color: #8000ff;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(128, 0, 255, 0.3);
+}
+
+.search-modes button:hover {
+  background-color: #e2e2e2;
+}
+
+.search-modes .active-mode {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.comment-input button:hover {
+  background: #0056b3;
+}
