@@ -61,6 +61,13 @@ export default function PostCard({
     }
   };
 
+  const getSimulatedDate = (postId) => {
+  const baseDate = new Date('2023-01-01T10:00:00');
+  const simulatedDate = new Date(baseDate.getTime() + postId * 3600 * 1000); // add hours
+  return simulatedDate.toLocaleString(); // you can format this as needed
+};
+
+
   return (
     <div className="post-card" onClick={() => onClick(post.id)}>
       <div className="post-header">
@@ -75,6 +82,9 @@ export default function PostCard({
             className="profile-img"
           />
           <span>{user ? `${user.firstName} ${user.lastName}` : `User ${post.userId}`}</span>
+        </div>
+        <div className="post-date">
+          📅 {getSimulatedDate(post.id)}
         </div>
       </div>
 

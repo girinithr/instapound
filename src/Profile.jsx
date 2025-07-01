@@ -25,6 +25,9 @@ function Profile() {
   const [profileImage, setProfileImage] = useState(user?.image || "");
   const fileInputRef = useRef(null);
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [postToDelete, setPostToDelete] = useState(null);
+
   useEffect(() => {
     if (!user) {
       navigate("/");
@@ -56,10 +59,19 @@ function Profile() {
   };
 
   const handleDelete = (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this post?");
-    if (confirmDelete) {
-      setPosts(posts.filter((post) => post.id !== id));
-    }
+    setPostToDelete(id);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = () => {
+    setPosts(posts.filter((post) => post.id !== postToDelete));
+    setPostToDelete(null);
+    setShowDeleteModal(false);
+  };
+
+  const cancelDelete = () => {
+    setPostToDelete(null);
+    setShowDeleteModal(false);
   };
 
   const handleEdit = (post) => {
@@ -100,81 +112,98 @@ function Profile() {
   return (
     <div className="profile-container">
       <Header onProfileClick={handleProfileClick} />
-
-      <div className="profile-header">
-        <div className="profile-image-wrapper" onClick={() => setShowImageModal(true)}>
-          <img src={profileImage || "/default-user.png"} alt={user.username} className="profile-image" />
-        </div>
-        <h2>{user.firstName} {user.lastName}</h2>
-        <p>{user.email}</p>
-      </div>
-
-      <div className="create-post">
-        <h3>Create New Post</h3>
-        <input
-          type="text"
-          placeholder="Post title"
-          value={newPost.title}
-          onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
-        />
-        <textarea
-          placeholder="Post body"
-          value={newPost.body}
-          onChange={(e) => setNewPost({ ...newPost, body: e.target.value })}
-        />
-        <button onClick={handleNewPost}>Post</button>
-      </div>
-
-      <h3>My Posts</h3>
-      <div className="grid-posts">
-        {posts.map((post) => (
-          <div key={post.id} className="post-box">
-            {editPostId === post.id ? (
-              <>
-                <input
-                  type="text"
-                  value={editContent.title}
-                  onChange={(e) => setEditContent({ ...editContent, title: e.target.value })}
-                />
-                <textarea
-                  value={editContent.body}
-                  onChange={(e) => setEditContent({ ...editContent, body: e.target.value })}
-                />
-                <button onClick={() => handleSaveEdit(post.id)}>Save</button>
-                <button onClick={() => setEditPostId(null)}>Cancel</button>
-              </>
-            ) : (
-              <>
-                <div className="post-user">
-                  <img src={post.userImage || "/default-user.png"} alt="user" />
-                </div>
-                <h4>{post.title}</h4>
-                <p>{post.body}</p>
-                <button onClick={() => handleEdit(post)}>✏️ Edit</button>
-                <button onClick={() => handleDelete(post.id)}>🗑️ Delete</button>
-              </>
-            )}
+      <div className="profile-content">
+        <div className="profile-header">
+          <div className="profile-image-wrapper" onClick={() => setShowImageModal(true)}>
+            <img src={profileImage || "/default-user.png"} alt={user.username} className="profile-image" />
           </div>
-        ))}
-      </div>
-
-      {showImageModal && (
-        <div className="modal-overlay" onClick={() => setShowImageModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <img src={profileImage} alt="Profile Large" className="modal-image" />
-            <button className="edit-image-btn" onClick={() => fileInputRef.current.click()}>
-              Edit Image
-            </button>
-            <input
-              type="file"
-              accept="image/*"
-              ref={fileInputRef}
-              style={{ display: "none" }}
-              onChange={handleImageChange}
-            />
+          <div className="profile-text">
+            <h2>{user.firstName} {user.lastName}</h2>
+            <p>{user.email}</p>
           </div>
         </div>
-      )}
+
+        <div className="create-post">
+          <h3>Create New Post</h3>
+          <input
+            type="text"
+            placeholder="Post title"
+            value={newPost.title}
+            onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
+          />
+          <textarea
+            placeholder="Post body"
+            value={newPost.body}
+            onChange={(e) => setNewPost({ ...newPost, body: e.target.value })}
+          />
+          <button onClick={handleNewPost}>Post</button>
+        </div>
+
+        <h3>My Posts</h3>
+        <div className="grid-posts">
+          {posts.map((post) => (
+            <div key={post.id} className="post-box">
+              {editPostId === post.id ? (
+                <>
+                  <input
+                    type="text"
+                    value={editContent.title}
+                    onChange={(e) => setEditContent({ ...editContent, title: e.target.value })}
+                  />
+                  <textarea
+                    value={editContent.body}
+                    onChange={(e) => setEditContent({ ...editContent, body: e.target.value })}
+                  />
+                  <button onClick={() => handleSaveEdit(post.id)}>Save</button>
+                  <button onClick={() => setEditPostId(null)}>Cancel</button>
+                </>
+              ) : (
+                <>
+                  <div className="post-user">
+                    <img src={post.userImage || "/default-user.png"} alt="user" />
+                  </div>
+                  <h4>{post.title}</h4>
+                  <p>{post.body}</p>
+                  <button onClick={() => handleEdit(post)}>✏️ Edit</button>
+                  <button onClick={() => handleDelete(post.id)}>🗑️ Delete</button>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {showImageModal && (
+          <div className="modal-overlay" onClick={() => setShowImageModal(false)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <img src={profileImage} alt="Profile Large" className="modal-image" />
+              <button className="edit-image-btn" onClick={() => fileInputRef.current.click()}>
+                Edit Image
+              </button>
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                onChange={handleImageChange}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteModal && (
+          <div className="modal-overlay" onClick={cancelDelete}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <h3>Confirm Deletion</h3>
+              <p>Are you sure you want to delete this post?</p>
+              <div style={{ marginTop: "1rem" }}>
+                <button className="confirm-btn" onClick={confirmDelete}>Yes, Delete</button>
+                <button className="cancel-btn" onClick={cancelDelete}>Cancel</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

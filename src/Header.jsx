@@ -3,10 +3,9 @@ import { UserContext } from "./UserContext";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 
-export default function Header({ onProfileClick, onSearch }) {
+export default function Header({ onProfileClick}) {
   const { user, setUser } = useContext(UserContext);
   const [showSettings, setShowSettings] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   const toggleTheme = () => {
@@ -20,7 +19,7 @@ export default function Header({ onProfileClick, onSearch }) {
   return (
     <header className="app-header">
       <div className="logo" onClick={() => navigate('/home')} style={{ cursor: "pointer" }}>
-        📸 InstaPound
+        📸 <span>InstaPound</span>
       </div>
 
       <div className="header-buttons">
@@ -31,12 +30,6 @@ export default function Header({ onProfileClick, onSearch }) {
       {showSettings && (
         <div className="settings-popup">
           <h4>Settings</h4>
-          <label>
-            <input type="checkbox" /> Allow Notifications
-          </label>
-          <label>
-            <input type="checkbox" /> Allow Location
-          </label>
           <button onClick={toggleTheme}>
             Switch to {user.theme === 'dark-theme' ? 'Light' : 'Dark'} Mode
           </button>

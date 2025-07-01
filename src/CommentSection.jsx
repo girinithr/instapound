@@ -14,6 +14,9 @@ export default function CommentSection({ postId }) {
   const [editText, setEditText] = useState('');
   const [activeMenuId, setActiveMenuId] = useState(null);
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState(null);
+
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
 
@@ -27,7 +30,6 @@ export default function CommentSection({ postId }) {
       }
     };
 
-    // Optimistic UI update
     mutate(prev => ({
       ...prev,
       comments: [...(prev?.comments || []), newC]
@@ -44,9 +46,6 @@ export default function CommentSection({ postId }) {
         userId: newC.user.id
       }),
     });
-
-    // Re-fetch to ensure latest server state
-    
   };
 
   const handleEdit = async (commentId) => {
@@ -69,22 +68,30 @@ export default function CommentSection({ postId }) {
     setEditText('');
   };
 
-  const handleDelete = async (commentId) => {
-  const confirmDelete = window.confirm("Are you sure you want to delete this comment?");
-  if (!confirmDelete) return;
+  const requestDelete = (commentId) => {
+    setCommentToDelete(commentId);
+    setShowDeleteModal(true);
+    setActiveMenuId(null);
+  };
 
-  await fetch(`https://dummyjson.com/comments/${commentId}`, {
-    method: 'DELETE'
-  });
+  const confirmDelete = async () => {
+    await fetch(`https://dummyjson.com/comments/${commentToDelete}`, {
+      method: 'DELETE'
+    });
 
-  mutate(prev => ({
-    ...prev,
-    comments: prev.comments.filter(c => c.id !== commentId)
-  }), false);
+    mutate(prev => ({
+      ...prev,
+      comments: prev.comments.filter(c => c.id !== commentToDelete)
+    }), false);
 
-  setActiveMenuId(null);
-};
+    setCommentToDelete(null);
+    setShowDeleteModal(false);
+  };
 
+  const cancelDelete = () => {
+    setCommentToDelete(null);
+    setShowDeleteModal(false);
+  };
 
   return (
     <div className="comment-section">
@@ -114,7 +121,7 @@ export default function CommentSection({ postId }) {
                       >
                         Edit
                       </button>
-                      <button onClick={() => handleDelete(comment.id)}>Delete</button>
+                      <button onClick={() => requestDelete(comment.id)}>Delete</button>
                     </div>
                   )}
                 </div>
@@ -152,6 +159,20 @@ export default function CommentSection({ postId }) {
         />
         <button onClick={handleAddComment}>Post</button>
       </div>
+
+      {/* Custom Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="modal-overlay" onClick={cancelDelete}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <h3>Delete Comment</h3>
+            <p>Are you sure you want to delete this comment?</p>
+            <div style={{ marginTop: '1rem' }}>
+              <button className="confirm-btn" onClick={confirmDelete}>Yes, Delete</button>
+              <button className="cancel-btn" onClick={cancelDelete}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
